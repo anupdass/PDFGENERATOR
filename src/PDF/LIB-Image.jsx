@@ -1,55 +1,55 @@
 import React, { useRef } from 'react';
-import jsPDF from 'jspdf';
 
-import image from '../assets/BSEC-Main.gif'
+import generatePDF from './GeneratePDF';
 
-const LIBPDF = ({ btntext, tableData, columData }) => {
-    const pdfRef = useRef();
+const LIBPDF = ({ btntext, tableData }) => {
 
-    const generatePDF = () => {
-        const pdf = new jsPDF('p', 'mm', 'a4'); // Create a new PDF document
+    const rows = tableData.map(item => [item.id, item.bankCode, item.bankName, item.entryDate]);
+    const columData = [['ID', 'Bank Code', 'Bank Name', 'Entry Date']]
 
-        // pdf.text('Bangladesh Steel and Engineering Corporation', 50, 10);
-        // pdf.addImage(image, 'JPEG', 100, 15, 25, 25); // Adjust position and dimensions
-        // pdf.setFontSize(14);
-        // pdf.setTextColor(128, 128, 128);
-        // pdf.text('Bangladesh Steel and Engineering Corporation', 55, 48);
+    // const generatePDF = () => {
+    //     const pdf = new jsPDF('p', 'mm', 'a4'); // Create a new PDF document
 
-        // Create a table with sample data
+    //     // pdf.text('Bangladesh Steel and Engineering Corporation', 50, 10);
+    //     // pdf.addImage(image, 'JPEG', 100, 15, 25, 25); // Adjust position and dimensions
+    //     // pdf.setFontSize(14);
+    //     // pdf.setTextColor(128, 128, 128);
+    //     // pdf.text('Bangladesh Steel and Engineering Corporation', 55, 48);
 
+    //     // Create a table with sample data
 
-        // Generate table
-        pdf.autoTable({
-            // startY: 60, // Adjust the starting position
-            head: columData,
-            body: tableData,
-            theme: "grid",
-            margin: { top: 55 },
-        });
+    //     // Generate table
+    //     pdf.autoTable({
+    //         // startY: 60, // Adjust the starting position
+    //         head: columData,
+    //         body: rows,
+    //         theme: "grid",
+    //         margin: { top: 55 },
+    //     });
 
-        // Split table across multiple pages if needed
-        const pageCount = pdf.internal.getNumberOfPages();
-        for (let i = 1; i <= pageCount; i++) {
-            pdf.setFontSize(20);
-            pdf.setTextColor(0, 0, 0);
-            pdf.text('Bangladesh Steel and Engineering Corporation', 40, 10);
-            pdf.addImage(image, 'JPEG', 100, 15, 25, 25); // Adjust position and dimensions
-            pdf.setFontSize(14);
-            pdf.setTextColor(128, 128, 128);
-            pdf.text('Bangladesh Steel and Engineering Corporation', 55, 48);
+    //     // Split table across multiple pages if needed
+    //     const pageCount = pdf.internal.getNumberOfPages();
+    //     for (let i = 1; i <= pageCount; i++) {
+    //         pdf.setFontSize(20);
+    //         pdf.setTextColor(0, 0, 0);
+    //         pdf.text('Bangladesh Steel and Engineering Corporation', 40, 10);
+    //         pdf.addImage(image, 'JPEG', 100, 15, 25, 25); // Adjust position and dimensions
+    //         pdf.setFontSize(14);
+    //         pdf.setTextColor(128, 128, 128);
+    //         pdf.text('Bangladesh Steel and Engineering Corporation', 55, 48);
 
-            pdf.setPage(i);
-            pdf.setFontSize(8); // Adjust font size if needed
-            pdf.text(10, 290, `Page ${i} of ${pageCount}`);
-        }
+    //         pdf.setPage(i);
+    //         pdf.setFontSize(8); // Adjust font size if needed
+    //         pdf.text(10, 290, `Page ${i} of ${pageCount}`);
+    //     }
 
-        // Save the PDF or open in a new tab
-        pdf.save('example.pdf'); // Change the filename as needed
-    };
+    //     // Save the PDF or open in a new tab
+    //     pdf.save('example.pdf'); // Change the filename as needed
+    // };
 
     return (
         <div>
-            <button onClick={generatePDF}>{btntext}</button>
+            <button onClick={() => generatePDF(rows, columData)}>{btntext}</button>
         </div>
     );
 }
